@@ -73,32 +73,16 @@ import 'package:story_groupper/story_groupper.dart';
                 return SafeArea(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      width: double.maxFinite,
-                      child: CupertinoButton(
-                        pressedOpacity: 0.75,
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        color: Theme.of(context).primaryColor,
-                        child: SizedBox(
-                          child: Text(
-                            'More details',
-                            textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.titleMedium?.apply(
-                                      color: Colors.white,
-                                    ),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_groupperKey.currentState?.isPaused ?? false) {
-                            _groupperKey.currentState?.resume();
-                          } else {
-                            _groupperKey.currentState?.pause();
-                          }
-                          // launch url or do some action with url
-                        },
-                      ),
+                    child: SomeButton(
+                      text: 'More details',
+                      onPressed: () {
+                        if (_groupperKey.currentState?.isPaused ?? false) {
+                          _groupperKey.currentState?.resume();
+                        } else {
+                          _groupperKey.currentState?.pause();
+                        }
+                        // launch url or do some action with url
+                      },
                     ),
                   ),
                 );
