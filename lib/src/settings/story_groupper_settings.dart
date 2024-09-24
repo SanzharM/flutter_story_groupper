@@ -51,6 +51,8 @@ class StoryGroupperSettings {
 
   final Color scaffoldBackgroundColor;
 
+  final Alignment imageAlignment;
+
   const StoryGroupperSettings({
     required this.getStoryItems,
     this.rethrowAtGettingItems = true,
@@ -64,6 +66,7 @@ class StoryGroupperSettings {
     this.showIndicators = true,
     this.pageController,
     this.scaffoldBackgroundColor = Colors.black,
+    this.imageAlignment = Alignment.topCenter,
   });
 
   static const EdgeInsets defaultIndicatorPadding = EdgeInsets.symmetric(

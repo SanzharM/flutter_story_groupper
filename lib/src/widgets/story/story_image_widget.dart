@@ -5,6 +5,7 @@ class StoryImageWidget extends StatefulWidget {
     super.key,
     this.heroTag,
     this.url,
+    this.alignment = Alignment.topCenter,
     this.fit = BoxFit.contain,
     this.size,
     this.borderRadius = const BorderRadius.all(Radius.circular(20.0)),
@@ -16,6 +17,7 @@ class StoryImageWidget extends StatefulWidget {
 
   final String? heroTag;
   final String? url;
+  final Alignment alignment;
   final BoxFit fit;
   final Size? size;
   final BorderRadius borderRadius;

@@ -36,7 +36,7 @@ class StoryPageBuilder extends StatelessWidget {
   final StoryItemBuilder? storyItemBuilder;
   final StoryItemImageBuilder? storyItemImageBuilder;
 
-  String get _heroTag =>
+  String get heroTag =>
       'story_group_${storyGroup.id ?? DateTime.now().microsecondsSinceEpoch}';
 
   @override
@@ -51,8 +51,9 @@ class StoryPageBuilder extends StatelessWidget {
             bottom: false,
             child: StoryImageWidget(
               key: ObjectKey(storyItem.imageUrl),
-              heroTag: _heroTag,
+              heroTag: heroTag,
               url: storyItem.imageUrl ?? '',
+              alignment: settings.imageAlignment,
               fit: BoxFit.fitWidth,
               onLoaded: () {
                 timerBloc.restart();

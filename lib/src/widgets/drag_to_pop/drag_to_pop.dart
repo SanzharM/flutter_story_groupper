@@ -1,3 +1,9 @@
+/*
+------------ Modified source code of DragToPop ------------
+            https://pub.dev/packages/overscroll_pop
+------------                                   ------------ 
+*/
+
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -148,6 +154,7 @@ class _DragToPopState extends State<DragToPop>
 Future<void> pushDragable({
   required BuildContext context,
   required Widget child,
+  BorderRadius borderRadius = const BorderRadius.all(Radius.circular(20.0)),
   bool fullscreenDialog = false,
   RouteSettings? settings,
   Duration transitionDuration = const Duration(milliseconds: 200),
@@ -173,21 +180,29 @@ Future<void> pushDragable({
         ) {
           if (animation.status == AnimationStatus.reverse ||
               animation.status == AnimationStatus.dismissed) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0),
-                end: const Offset(0.0, 0.0),
-              ).animate(animation),
-              child: child,
+            return ClipRRect(
+              borderRadius: borderRadius,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  // adjust the position as you need
+                  begin: const Offset(0, 0),
+                  end: const Offset(0.0, 0.0),
+                ).animate(animation),
+                child: child,
+              ),
             );
           }
 
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0.0, 1),
-              end: const Offset(0.0, 0.0),
-            ).animate(animation),
-            child: child,
+          return ClipRRect(
+            borderRadius: borderRadius,
+            child: SlideTransition(
+              // adjust the position as you need
+              position: Tween<Offset>(
+                begin: const Offset(0.0, 1),
+                end: const Offset(0.0, 0.0),
+              ).animate(animation),
+              child: child,
+            ),
           );
         },
         pageBuilder: (_, animation, secondaryAnimation) {

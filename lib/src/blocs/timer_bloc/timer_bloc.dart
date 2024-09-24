@@ -19,7 +19,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     this._ticker, {
     this.duration = const Duration(minutes: 1),
   }) : super(TimerState(
-          endTime: DateTime.now(),
+          endTime: DateTime.now().add(duration),
+          durationLeft: duration,
         )) {
     on<TimerStartEvent>(_start);
     on<TimerTickEvent>(_tickEvent);
@@ -31,6 +32,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Duration duration;
   StreamSubscription<int>? _tickerSubscription;
 
+  bool? get isPaused => _tickerSubscription?.isPaused;
+
   @override
   Future<void> close() {
     _tickerSubscription?.cancel();
@@ -41,7 +44,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     TimerStartEvent event,
     Emitter<TimerState> emit,
   ) async {
-    emit(state.copyWith(
+    emit(TimerState(
       endTime: DateTime.now().add(duration),
       durationLeft: duration,
     ));

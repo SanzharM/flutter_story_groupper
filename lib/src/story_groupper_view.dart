@@ -67,14 +67,17 @@ class StoryGroupperViewState extends State<StoryGroupperView> {
   void pause() => _timerBloc.pause();
   void resume() => _timerBloc.resume();
 
+  bool? get isPaused => _timerBloc.isPaused;
+
   void _initialRequest() {
     final int? groupId =
         widget.initialGroupId ?? widget.storyGroups.firstOrNull?.id;
+
     if (groupId == null) {
       Navigator.of(context).maybePop<void>();
       return;
     }
-    return _storyBloc.getItems(groupId);
+    _storyBloc.getItems(groupId);
   }
 
   @override
@@ -103,8 +106,20 @@ class StoryGroupperViewState extends State<StoryGroupperView> {
 
   @override
   void dispose() {
+    final items =
+        _storyBloc.state.groupItems[_storyBloc.state.currentStoryGroupId] ?? [];
+    if (_itemIndex + 1 >= items.length &&
+        _storyBloc.state.currentStoryGroup != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onStoryGroupFinished?.call(
+          _storyBloc.state.currentStoryGroup!,
+        );
+      });
+    }
     _pageController.dispose();
     _timerBloc.close();
+    _storyBloc.close();
+
     super.dispose();
   }
 
@@ -123,6 +138,7 @@ class StoryGroupperViewState extends State<StoryGroupperView> {
           builder: (context, state) {
             return Scaffold(
               backgroundColor: _settings.scaffoldBackgroundColor,
+              extendBodyBehindAppBar: true,
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 toolbarHeight: 0,
@@ -136,12 +152,16 @@ class StoryGroupperViewState extends State<StoryGroupperView> {
                 ),
                 itemCount: widget.storyGroups.length,
                 onPageChanged: (value) {
-                  int groupId = widget.storyGroups[value].id!;
+                  int? groupId = widget.storyGroups[value].id;
+                  if (groupId == null) {
+                    Navigator.of(context).maybePop<void>();
+                    return;
+                  }
                   _storyBloc.getItems(groupId);
                   setState(() => _itemIndex = 0);
                   _timerBloc.pause();
                 },
-                itemBuilder: (context, index) {
+                itemBuilder: (bContext, index) {
                   return _buildPage(
                     context: context,
                     timerState: timerState,
@@ -184,17 +204,22 @@ class StoryGroupperViewState extends State<StoryGroupperView> {
       return _settings.storyPageBuilder!(storyGroup, item);
     }
 
-    return StoryPageBuilder(
-      storyGroup: storyGroup,
-      storyItem: item,
-      storyItems: storyItems,
-      currentStoryItemIndex: _itemIndex,
-      onPrevStoryGroup: _onPrevStoryGroup,
-      onNextStoryGroup: _onNextStoryGroup,
-      timerBloc: _timerBloc,
-      settings: _settings,
-      storyItemBuilder: widget.storyItemBuilder,
-      storyItemImageBuilder: widget.storyItemImageBuilder,
+    return Padding(
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).viewPadding.top,
+      ),
+      child: StoryPageBuilder(
+        storyGroup: storyGroup,
+        storyItem: item,
+        storyItems: storyItems,
+        currentStoryItemIndex: _itemIndex,
+        onPrevStoryGroup: _onPrevStoryGroup,
+        onNextStoryGroup: _onNextStoryGroup,
+        timerBloc: _timerBloc,
+        settings: _settings,
+        storyItemBuilder: widget.storyItemBuilder,
+        storyItemImageBuilder: widget.storyItemImageBuilder,
+      ),
     );
   }
 
