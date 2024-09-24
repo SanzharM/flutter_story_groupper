@@ -9,7 +9,7 @@ Flutter solution for Stories containing multiple sub-stories
 
 This package simplifies the process of displaying story groups (e.g., thumbnails) and manages the flow for playing stories when a user selects a group. It offers extensive customization options, allowing developers to adjust story duration, use custom widgets, and integrate their own story data. With built-in logic to handle story transitions and essential functionality, developers only need to provide a few required settings to get started.
 
-## Usage
+## Getting Started
 
 ```dart
 import 'package:story_groupper/story_groupper.dart';
@@ -20,7 +20,7 @@ import 'package:story_groupper/story_groupper.dart';
 3. Provide ```StoryGroupperSettings``` as a parameter
 4. Customize your story
 
-## Usage Example
+## Usage
 
 ```dart
  void _onStoryGroupPressed(YourCustomStoryGroupDto group) {
@@ -127,3 +127,6 @@ import 'package:story_groupper/story_groupper.dart';
 
 1. Dependencies: The package relies on external dependencies such as flutter_bloc, equatable, and dart:collection, which may impact flexibility for projects using different state management solutions.
 2. Transition Smoothness: There's room for improvement in the smoothness of transitions and animations, which will be addressed in future updates.
+
+## Feedback and Bug Reports
+We welcome feedback and encourage users to report any issues they encounter. If you find a bug or have a suggestion for improvement, please open an issue on GitHub. Your contributions help us improve the package and ensure a better experience for all users.
