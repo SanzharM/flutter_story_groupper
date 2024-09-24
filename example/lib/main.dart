@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:example/data/mock_data.dart';
 import 'package:example/models/models.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:example/widgets/some_button.dart';
 import 'package:flutter/material.dart';
 import 'package:story_groupper/story_groupper.dart';
 
@@ -116,7 +114,7 @@ class _HomePageState extends State<HomePage> {
             .toList(),
         initialGroupId: group.id,
         onStoryGroupChanged: (group) {
-          log('Group ${group.id} changed. You may send analytics etc.');
+          // Group changed. You may send analytics etc.
           // You may also provide a callback to cache viewed story groups
           final int? groupId = group.id;
           if (groupId != null) {
@@ -127,7 +125,7 @@ class _HomePageState extends State<HomePage> {
           }
         },
         onStoryGroupFinished: (group) {
-          log('Group ${group.id} finished. You may send analytics etc.');
+          // Group finished. You may send analytics etc.
           // You may also provide a callback to cache viewed story groups
           final int? groupId = group.id;
           if (groupId != null) {
@@ -143,10 +141,7 @@ class _HomePageState extends State<HomePage> {
             null
             :
             // This is custom building story top layer widgets
-
-            // Also you can use here package default widgets
             (group, item) {
-                // print('asdasd');
                 final customItemDto = _items.firstWhere((e) => e.id == item.id);
                 if (customItemDto.buttonUrl?.isEmpty ?? true) {
                   return const SizedBox();
@@ -154,32 +149,16 @@ class _HomePageState extends State<HomePage> {
                 return SafeArea(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      width: double.maxFinite,
-                      child: CupertinoButton(
-                        pressedOpacity: 0.75,
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        color: Theme.of(context).primaryColor,
-                        child: SizedBox(
-                          child: Text(
-                            'More details',
-                            textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.titleMedium?.apply(
-                                      color: Colors.white,
-                                    ),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_groupperKey.currentState?.isPaused ?? false) {
-                            _groupperKey.currentState?.resume();
-                          } else {
-                            _groupperKey.currentState?.pause();
-                          }
-                          // launch url or do some action with url
-                        },
-                      ),
+                    child: SomeButton(
+                      text: 'More details',
+                      onPressed: () {
+                        if (_groupperKey.currentState?.isPaused ?? false) {
+                          _groupperKey.currentState?.resume();
+                        } else {
+                          _groupperKey.currentState?.pause();
+                        }
+                        // launch url or do some action with url
+                      },
                     ),
                   ),
                 );
